@@ -34,7 +34,7 @@ for r in rows:
     out.append({**r, "got": got, "ok": hit, "ms": int((time.time() - t) * 1000),
                 "stores": "|".join(s["name"] for s in d.get("stores", [])), "answer": (d.get("answer") or "")[:80]})
     print(f"{'✓' if hit else '✗'} {r['question']:<40} expect={r['expected_scope']:<9} got={got:<9} {out[-1]['ms']}ms {out[-1]['stores']}")
-    time.sleep(max(0, 5.2 - (time.time() - t)))  # 서버의 IP별 분당 12회 제한 안쪽으로
+    time.sleep(max(0, float(os.environ.get("EVAL_GAP", "5.2")) - (time.time() - t)))  # 서버의 IP별 분당 12회 제한 안쪽으로
 
 with open(os.path.join(INTERIM, "eval_result.csv"), "w", newline="", encoding="utf-8-sig") as f:
     w = csv.DictWriter(f, fieldnames=list(out[0].keys()))

@@ -11,13 +11,18 @@
 
 ## 단계
 - [x] Step 0 레포 정리
-- [ ] Step 1 Supabase 스키마
-- [ ] Step 2 데이터 파이프라인
+- [x] Step 1 Supabase 스키마 (SQL Editor 실행, 테이블 4개 + match_stores 확인)
+- [x] Step 2 데이터 파이프라인 (149곳 적재, 공개 119/숨김 30, 임베딩 null 0, 프랜차이즈 의심 27)
 - [ ] Step 3 웹 지도·상세 + 첫 배포
 - [ ] Step 4 챗봇
 - [ ] Step 5 부산집 메뉴·주문 카드
 - [ ] Step 6 릴스·저장·영어
 - [ ] Step 7 배포 마무리
+
+## 챗봇 평가 (2026-11-02, 로컬, gpt-5.4-mini)
+- 범위 정확도 32/32 (100%), 태그 적중 10/10, 평균 2.1초
+- 수정: 카카오 지역 판정에서 '쪽/근처' 접미어 제거 + 상위 5개 중 최근접 기준, Planner에 '타 지역 맛집 질문도 recommend' 규칙 추가
+- 관찰: '상수동 경양식집' 결과에 지금은 주점으로 보이는 곳이 섞임 → 인허가 업태가 오래된 경우. review.csv 검수로 정리 필요
 
 ## 옮긴 파일 (Step 0)
 - `scripts/tourapi_hongdae_check.py` → `pipeline/01_tourapi.py`
