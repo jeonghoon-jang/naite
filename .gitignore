@@ -147,3 +147,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+.venv*/
+
+# NAITE
+data/raw/
+data/interim/
+__pycache__/
+.vercel
+web/.env
