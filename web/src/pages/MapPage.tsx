@@ -144,7 +144,8 @@ export default function MapPage({ active }: { active: boolean }) {
 
   return (
     <div className="relative h-full overflow-hidden bg-gray-100">
-      <div data-noswipe className="absolute inset-0">
+      {/* isolate: 카카오 지도 내부 레이어의 z-index 가 목록 화면 위로 올라오지 않게 가둔다 */}
+      <div data-noswipe className="absolute inset-0 isolate">
         {!sdk.loading && !sdk.error && (
           <Map center={HONGDAE} level={5} className="h-full w-full" onCreate={setMap}>
             <Circle center={HONGDAE} radius={RADIUS_M} strokeWeight={1.5} strokeColor="#b8581f" strokeOpacity={0.5} strokeStyle="dash" fillColor="#b8581f" fillOpacity={0.03} />
@@ -224,11 +225,11 @@ export default function MapPage({ active }: { active: boolean }) {
               {t('decade', { d })}
             </Chip>
           ))}
-          {CATS.filter((c) => counts.get(c)).map((c) => (
+          {CATS.filter((c) => counts.get(c) || f.cat === c).map((c) => (
             <Chip key={c} on={f.cat === c} onClick={() => set({ cat: f.cat === c ? null : c })}>
               <CategoryIcon cat={c} size={17} className={f.cat === c ? '' : 'text-accent'} />
               {catLabel(c, lang)}
-              <span className={`text-[12px] ${f.cat === c ? 'text-white/80' : 'text-gray-400'}`}>{counts.get(c)}</span>
+              <span className={`text-[12px] ${f.cat === c ? 'text-white/80' : 'text-gray-400'}`}>{counts.get(c) ?? 0}</span>
             </Chip>
           ))}
         </div>
@@ -246,6 +247,11 @@ export default function MapPage({ active }: { active: boolean }) {
           </svg>
           {isList ? t('map.map') : t('map.list')}
         </button>
+        {!isList && stores && shown.length === 0 && (
+          <p className="pointer-events-auto mx-4 w-[calc(100%-32px)] rounded-[22px] border border-gray-200 bg-white px-5 py-5 text-center text-[14px] break-keep text-gray-600">
+            {f.saved ? t('list.emptySaved') : t('list.empty')}
+          </p>
+        )}
         {!isList && shown.length > 0 && (
           <div
             ref={cards}
