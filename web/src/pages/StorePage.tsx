@@ -97,7 +97,7 @@ export default function StorePage() {
             {lang === 'en' && <div className="-mt-1 text-sm text-gray-500">{s.name}</div>}
             <div className="flex flex-wrap items-baseline gap-x-1.5">
               <span className="text-[22px] font-black tracking-tight text-accent">
-                {t('since', { year: year ?? '-' })} {t('yearsN', { n: years ?? '-' })}
+                {t('since', { year: year ?? '-' })} · {t('yearsN', { n: years ?? '-' })}
               </span>
               <span className="text-[12px] font-medium text-gray-500">{t('byLicense')}</span>
             </div>
