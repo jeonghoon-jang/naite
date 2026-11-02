@@ -12,6 +12,13 @@ function read(): string[] {
   }
 }
 
+// localStorage 는 브라우저를 껐다 켜도 남는다. 다른 탭에서 바꾼 것도 바로 반영.
+window.addEventListener('storage', (e) => {
+  if (e.key !== KEY) return
+  snapshot = read()
+  listeners.forEach((l) => l())
+})
+
 export function toggleSaved(slug: string) {
   snapshot = snapshot.includes(slug) ? snapshot.filter((s) => s !== slug) : [...snapshot, slug]
   localStorage.setItem(KEY, JSON.stringify(snapshot))
