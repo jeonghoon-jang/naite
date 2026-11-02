@@ -1,0 +1,26 @@
+{
+  "_comment": "부산집 목업. 매장 사실(이름·주소·좌표·업력)은 인허가 레코드에서 오고, 아래 사진·메뉴·주문문구·릴스는 전부 예시다. 실제 메뉴를 받으면 menus 를 교체하고 is_mock=false 로.",
+  "license_no": "3130000-101-1985-08174",
+  "slug": "busanjip",
+  "photo_url": "/mock/busanjip/busanzip1.jpeg",
+  "photo_credit": "예시 사진",
+  "menus": [
+    {"name_ko": "장어구이", "name_en": "Grilled Eel", "desc_ko": "소금 또는 양념", "desc_en": "Salt or spicy sauce", "price": 38000, "unit_ko": "1인분", "unit_en": "per person", "min_qty": 2},
+    {"name_ko": "장어탕", "name_en": "Eel Soup", "desc_ko": "밥 포함", "desc_en": "Served with rice", "price": 13000, "unit_ko": "1그릇", "unit_en": "per bowl", "min_qty": 1},
+    {"name_ko": "된장찌개", "name_en": "Soybean Paste Stew", "desc_ko": "식사 주문 시", "desc_en": "With a meal order", "price": 4000, "unit_ko": "1그릇", "unit_en": "per bowl", "min_qty": 1},
+    {"name_ko": "공기밥", "name_en": "Steamed Rice", "desc_ko": null, "desc_en": null, "price": 1000, "unit_ko": "1공기", "unit_en": "per bowl", "min_qty": 1},
+    {"name_ko": "소주", "name_en": "Soju", "desc_ko": null, "desc_en": null, "price": 5000, "unit_ko": "1병", "unit_en": "per bottle", "min_qty": 1},
+    {"name_ko": "맥주", "name_en": "Beer", "desc_ko": null, "desc_en": null, "price": 5000, "unit_ko": "1병", "unit_en": "per bottle", "min_qty": 1},
+    {"name_ko": "음료수", "name_en": "Soft Drink", "desc_ko": "콜라·사이다", "desc_en": "Coke or Sprite", "price": 2000, "unit_ko": "1캔", "unit_en": "per can", "min_qty": 1}
+  ],
+  "order_phrases": [
+    {"text_ko": "덜 맵게 해주세요.", "text_en": "Less spicy, please."},
+    {"text_ko": "앞접시 하나 더 주세요.", "text_en": "One more small plate, please."},
+    {"text_ko": "물 좀 주세요.", "text_en": "Water, please."},
+    {"text_ko": "계산은 카드로 할게요.", "text_en": "I'll pay by card."}
+  ],
+  "reels": [
+    {"video_url": "/mock/busanjip/busanzip_lils1.mp4", "poster_url": "/mock/busanjip/busanzip1.jpeg", "caption_ko": "1985년부터, 동교동 부산집", "caption_en": "Busanjip in Donggyo-dong, licensed since 1985"},
+    {"video_url": null, "poster_url": "/mock/busanjip/busanzip2.jpeg", "caption_ko": "가게 앞 풍경", "caption_en": "In front of the store"}
+  ]
+}
