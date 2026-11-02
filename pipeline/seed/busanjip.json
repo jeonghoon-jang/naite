@@ -20,7 +20,7 @@
     {"text_ko": "계산은 카드로 할게요.", "text_en": "I'll pay by card."}
   ],
   "reels": [
-    {"video_url": null, "poster_url": "/mock/busanjip/busanzip1.jpeg", "caption_ko": "1985년부터, 동교동 부산집", "caption_en": "Busanjip in Donggyo-dong, licensed since 1985"},
+    {"video_url": "/mock/busanjip/busanzip_lils1.mp4", "poster_url": "/mock/busanjip/busanzip1.jpeg", "caption_ko": "1985년부터, 동교동 부산집", "caption_en": "Busanjip in Donggyo-dong, licensed since 1985"},
     {"video_url": null, "poster_url": "/mock/busanjip/busanzip2.jpeg", "caption_ko": "가게 앞 풍경", "caption_en": "In front of the store"}
   ]
 }
