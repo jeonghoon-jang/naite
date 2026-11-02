@@ -25,7 +25,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, [])
   const t = useCallback(
     (k: Key, vars?: Record<string, string | number>) =>
-      Object.entries(vars ?? {}).reduce((s, [v, x]) => s.replaceAll(`{${v}}`, String(x)), dict[lang][k] ?? k),
+      Object.entries(vars ?? {})
+        .reduce((s, [v, x]) => s.replaceAll(`{${v}}`, String(x)), dict[lang][k] ?? k)
+        .replaceAll('{s}', vars?.n === 1 ? '' : 's'), // 영어 복수형: "{n} place{s}"
     [lang],
   )
   return <Ctx.Provider value={{ lang, setLang, t }}>{children}</Ctx.Provider>

@@ -6,7 +6,7 @@ const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string
 export const supabase = createClient(url, key, { auth: { persistSession: false } })
 
 export const CARD_COLS =
-  'id,slug,name,name_en,lat,lng,address,dong,dist_m,license_date,years_by_license,biz_type,cuisine_tags,menu_main,menu_source,is_baeknyeon,data_status,summary_ko,summary_en,kakao_place_url,photo_url'
+  'id,slug,name,name_en,lat,lng,address,dong,dist_m,license_date,years_by_license,biz_type,cuisine_tags,menu_main,menu_source,is_baeknyeon,is_model_restaurant,data_status,summary_ko,summary_en,kakao_place_url,photo_url'
 
 // 화면 간 이동에서 같은 요청을 반복하지 않도록 메모리 캐시 (요청 1회 = Promise 1개)
 const cache = new Map<string, Promise<unknown>>()
@@ -30,7 +30,7 @@ export const fetchStores = () =>
 export const fetchStore = (slug: string) =>
   once(`store:${slug}`, async () =>
     unwrap<StoreDetail | null>(
-      await supabase.from('stores').select(`${CARD_COLS},photo_credit,is_model_restaurant,sources,menus(id)`).eq('slug', slug).maybeSingle(),
+      await supabase.from('stores').select(`${CARD_COLS},photo_credit,sources,menus(id)`).eq('slug', slug).maybeSingle(),
     ),
   )
 
@@ -54,7 +54,7 @@ export const fetchReels = () =>
     unwrap<Reel[]>(
       await supabase
         .from('reels')
-        .select('id,sort,video_url,poster_url,caption_ko,caption_en,is_mock,stores!inner(slug,name,name_en,license_date,years_by_license)')
+        .select('id,sort,video_url,poster_url,caption_ko,caption_en,is_mock,stores!inner(slug,name,name_en,license_date,years_by_license,cuisine_tags,biz_type)')
         .order('sort'),
     ),
   )

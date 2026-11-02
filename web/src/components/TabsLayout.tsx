@@ -2,19 +2,21 @@ import { useRef, type ReactNode } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router'
 import { useI18n } from '../lib/i18n'
 import AskPage from '../pages/AskPage'
+import HomePage from '../pages/HomePage'
 import MapPage from '../pages/MapPage'
 import ReelsPage from '../pages/ReelsPage'
 
 export const TABS = [
-  { path: '/', key: 'tab.map', icon: <path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" /> },
-  { path: '/reels', key: 'tab.reels', icon: <path d="M5 3h14v18H5zM10 9l5 3-5 3V9Z" /> },
-  { path: '/ask', key: 'tab.ask', icon: <path d="M4 5h16v11H9l-5 4V5Zm4 5h8M8 13h5" /> },
+  { path: '/', key: 'tab.home', icon: (on: boolean) => <path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-5H9v5H5.5A1.5 1.5 0 0 1 4 19v-8.5Z" fill={on ? 'currentColor' : 'none'} /> },
+  { path: '/map', key: 'tab.map', icon: (on: boolean) => <path d="M12 21s7-6.6 7-11.5a7 7 0 0 0-14 0C5 14.4 12 21 12 21Zm0-8.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill={on ? 'currentColor' : 'none'} fillRule="evenodd" /> },
+  { path: '/reels', key: 'tab.reels', icon: (on: boolean) => <><rect x="4" y="3" width="16" height="18" rx="4" fill={on ? 'currentColor' : 'none'} /><path d="M10 9v6l5-3-5-3Z" fill={on ? '#fff' : 'currentColor'} stroke={on ? '#fff' : 'currentColor'} /></> },
+  { path: '/ask', key: 'tab.ask', icon: (on: boolean) => <path d="M12 4c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-.9 0-1.7-.1-2.5-.3L5 20l.9-3.6C4.4 15.1 3.5 13.2 3.5 11c0-3.9 3.8-7 8.5-7Z" fill={on ? 'currentColor' : 'none'} /> },
 ] as const
 
 /**
- * 하단 탭 3개(지도/릴스/AI 챗봇). 세 화면을 가로로 나란히 두고 이동만 해서
+ * 하단 탭 4개(홈/지도/릴스/AI 챗봇). 네 화면을 가로로 나란히 두고 이동만 해서
  * 지도 상태·챗봇 대화가 탭을 오가도 유지된다. 좌우 스와이프로 전환,
- * 단 data-noswipe 영역(지도)에서 시작한 제스처는 지도 조작으로 남긴다.
+ * 단 data-noswipe 영역(지도, 가로 스크롤 줄)에서 시작한 제스처는 그 조작으로 남긴다.
  */
 export default function TabsLayout() {
   const { pathname } = useLocation()
@@ -22,8 +24,9 @@ export default function TabsLayout() {
   const { t } = useI18n()
   const idx = Math.max(0, TABS.findIndex((x) => x.path === pathname))
   const touch = useRef<{ x: number; y: number; at: number; skip: boolean } | null>(null)
+  const n = TABS.length
 
-  const panels: ReactNode[] = [<MapPage key="map" />, <ReelsPage key="reels" active={idx === 1} />, <AskPage key="ask" />]
+  const panels: ReactNode[] = [<HomePage key="home" active={idx === 0} />, <MapPage key="map" active={idx === 1} />, <ReelsPage key="reels" active={idx === 2} />, <AskPage key="ask" />]
 
   return (
     <div className="flex h-full flex-col">
@@ -45,30 +48,34 @@ export default function TabsLayout() {
           const dy = p.clientY - s.y
           if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - s.at > 700) return
           const next = idx + (dx < 0 ? 1 : -1)
-          if (next >= 0 && next < TABS.length) nav(TABS[next].path, { replace: true })
+          if (next >= 0 && next < n) nav(TABS[next].path, { replace: true })
         }}
       >
-        <div className="flex h-full w-[300%] transition-transform duration-300 ease-out" style={{ transform: `translateX(-${(idx * 100) / 3}%)` }}>
+        <div className="flex h-full transition-transform duration-300 ease-out" style={{ width: `${n * 100}%`, transform: `translateX(-${(idx * 100) / n}%)` }}>
           {panels.map((p, i) => (
-            <section key={i} className="h-full w-1/3 overflow-hidden" aria-hidden={i !== idx} inert={i !== idx}>
+            <section key={i} className="h-full overflow-hidden" style={{ width: `${100 / n}%` }} aria-hidden={i !== idx} inert={i !== idx}>
               {p}
             </section>
           ))}
         </div>
       </div>
-      <nav className="grid grid-cols-3 border-t border-neutral-200 bg-white pb-[env(safe-area-inset-bottom)]">
+      <nav className="grid grid-cols-4 border-t border-gray-100 bg-white pb-[env(safe-area-inset-bottom)]">
         {TABS.map((tab) => (
           <NavLink
             key={tab.path}
             to={tab.path}
             replace
             end
-            className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2 text-[11px] ${isActive ? 'text-accent' : 'text-neutral-500'}`}
+            className={({ isActive }) => `flex flex-col items-center gap-0.5 pb-1.5 pt-2 text-[11px] ${isActive ? 'font-bold text-accent' : 'font-medium text-gray-500'}`}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round">
-              {tab.icon}
-            </svg>
-            {t(tab.key)}
+            {({ isActive }) => (
+              <>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" className={isActive ? '' : 'text-gray-400'}>
+                  {tab.icon(isActive)}
+                </svg>
+                {t(tab.key)}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export default function Badge({ children, tone = 'gray' }: { children: ReactNode; tone?: 'gray' | 'accent' }) {
-  const cls = tone === 'accent' ? 'border-accent/40 text-accent' : 'border-neutral-300 text-neutral-500'
-  return <span className={`inline-flex shrink-0 items-center rounded border px-1.5 py-px text-[11px] leading-4 ${cls}`}>{children}</span>
+export default function Badge({ children, tone = 'gray' }: { children: ReactNode; tone?: 'gray' | 'accent' | 'solid' }) {
+  const cls = tone === 'solid' ? 'bg-accent text-white' : tone === 'accent' ? 'bg-accent-50 text-accent' : 'bg-gray-100 text-gray-600'
+  return <span className={`inline-flex shrink-0 items-center rounded-md px-1.5 py-0.5 text-[11px] font-bold leading-4 ${cls}`}>{children}</span>
 }

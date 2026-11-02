@@ -17,22 +17,25 @@ export default function Roadview({ lat, lng }: { lat: number; lng: number }) {
   const [none, setNone] = useState(false)
   const kakao = useKakao()
   return (
-    <section className="border-t border-neutral-200">
-      <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-4 py-3 text-left font-medium" aria-expanded={open}>
-        {t('store.roadview')}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={open ? 'rotate-180' : ''}>
+    <section className="overflow-hidden rounded-2xl bg-gray-50">
+      <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-4.5 py-4 text-left" aria-expanded={open}>
+        <span>
+          <span className="block text-[15px] font-bold">{t('store.roadview')}</span>
+          <span className="block text-[12px] text-gray-500">{t('store.roadviewNote')}</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}>
           <path d="m6 9 6 6 6-6" />
         </svg>
       </button>
       {open && (
-        <div className="px-4 pb-4">
+        <div className="px-3 pb-3">
           {none ? (
-            <p className="py-6 text-center text-sm text-neutral-500">{t('store.roadviewNone')}</p>
+            <p className="py-6 text-center text-sm text-gray-500">{t('store.roadviewNone')}</p>
           ) : (
             !kakao.loading && (
               <KakaoRoadview
                 position={{ lat, lng, radius: 60 }}
-                className="h-56 w-full rounded"
+                className="h-56 w-full rounded-xl"
                 onErrorGetNearestPanoId={() => setNone(true)}
                 onPanoidChange={(rv) => {
                   const p = rv.getPosition()
@@ -41,7 +44,6 @@ export default function Roadview({ lat, lng }: { lat: number; lng: number }) {
               />
             )
           )}
-          <p className="mt-1 text-[11px] text-neutral-400">{t('store.roadviewNote')}</p>
         </div>
       )}
     </section>

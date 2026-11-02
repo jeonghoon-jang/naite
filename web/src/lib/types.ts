@@ -17,6 +17,7 @@ export type StoreCard = {
   menu_main: string | null
   menu_source: string | null
   is_baeknyeon: boolean
+  is_model_restaurant?: boolean
   data_status: 'mock' | 'candidate' | 'verified'
   summary_ko: string | null
   summary_en: string | null
@@ -55,5 +56,5 @@ export type Reel = {
   caption_ko: string | null
   caption_en: string | null
   is_mock: boolean
-  stores: Pick<StoreCard, 'slug' | 'name' | 'name_en' | 'license_date' | 'years_by_license'>
+  stores: Pick<StoreCard, 'slug' | 'name' | 'name_en' | 'license_date' | 'years_by_license' | 'cuisine_tags' | 'biz_type'>
 }
