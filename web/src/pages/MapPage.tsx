@@ -63,7 +63,10 @@ export default function MapPage() {
 
   const select = (slug: string) => {
     setSelected(slug)
-    listRef.current?.querySelector(`[data-slug="${slug}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    // scrollIntoView 대신 목록 컨테이너만 스크롤 (탭 틀이 가로로 밀리지 않게)
+    const list = listRef.current
+    const item = list?.querySelector<HTMLElement>(`[data-slug="${slug}"]`)
+    if (list && item) list.scrollTo({ top: item.offsetTop - 8, behavior: 'smooth' })
   }
 
   return (
@@ -109,7 +112,7 @@ export default function MapPage() {
         ))}
       </div>
 
-      <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto">
+      <div ref={listRef} className="relative min-h-0 flex-1 overflow-y-auto">
         {err && <p className="p-6 text-center text-sm text-neutral-500">{t('error')}</p>}
         {!stores && !err && <p className="p-6 text-center text-sm text-neutral-500">{t('loading')}</p>}
         {stores && (

@@ -22,11 +22,13 @@ export default function AskPage() {
   const [msgs, setMsgs] = useState<Msg[]>(load)
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
-  const end = useRef<HTMLDivElement>(null)
+  const scroller = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     sessionStorage.setItem(KEY, JSON.stringify(msgs.slice(-30)))
-    end.current?.scrollIntoView({ behavior: 'smooth' })
+    // scrollIntoView 는 탭 틀(가로)까지 스크롤해서 쓰지 않는다. 자기 목록만 아래로.
+    const el = scroller.current
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
   }, [msgs])
 
   async function send(text: string) {
@@ -57,7 +59,7 @@ export default function AskPage() {
         <span className="font-semibold">{t('ask.title')}</span>
         <LangToggle />
       </header>
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto">
         <div className="px-4 py-4 text-sm text-neutral-600">{t('ask.intro')}</div>
         {msgs.length === 0 && (
           <div className="flex flex-col items-start gap-2 px-4">
@@ -95,7 +97,6 @@ export default function AskPage() {
             ),
           )}
           {busy && <div className="px-4 text-sm text-neutral-400">{t('loading')}</div>}
-          <div ref={end} />
         </div>
       </div>
       <form

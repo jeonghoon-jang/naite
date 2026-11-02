@@ -29,6 +29,9 @@ export default function TabsLayout() {
     <div className="flex h-full flex-col">
       <div
         className="relative min-h-0 flex-1 overflow-hidden"
+        onScroll={(e) => {
+          if (e.currentTarget.scrollLeft) e.currentTarget.scrollLeft = 0 // 탭 틀은 transform으로만 움직인다
+        }}
         onTouchStart={(e) => {
           const p = e.touches[0]
           touch.current = { x: p.clientX, y: p.clientY, at: Date.now(), skip: !!(e.target as HTMLElement).closest('[data-noswipe]') }

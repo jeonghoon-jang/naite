@@ -10,7 +10,7 @@ import StorePage from './pages/StorePage'
 
 const router = createBrowserRouter([
   // 탭 3개는 하나의 레이아웃 아래 둬서 탭을 오가도 다시 마운트되지 않게 한다
-  { element: <TabsLayout />, children: [{ path: '/' }, { path: '/reels' }, { path: '/ask' }] },
+  { element: <TabsLayout />, children: [{ path: '/', element: null }, { path: '/reels', element: null }, { path: '/ask', element: null }] },
   { path: '/s/:slug', element: <StorePage /> },
   { path: '/s/:slug/menu', element: <MenuPage /> },
   { path: '/s/:slug/order', element: <OrderCardPage /> },
