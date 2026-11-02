@@ -2,12 +2,28 @@
 
 @theme {
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --color-accent: #b5541c;
-  --color-accent-soft: #f6ece5;
-  --color-ink: #1a1a1a;
+  /* 브랜드 주황 브라운 1색 + 크림 면 + 회색 단계 */
+  --color-accent: #b8581f;
+  --color-accent-600: #96461a;
+  --color-accent-50: #fdf3ec;
+  --color-accent-100: #f8e0cf;
+  --color-accent-dark: #3a2418;
+  --color-accent-soft: #fdf3ec;
+  --color-ink: #191f28;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f2f4f6;
+  --color-gray-200: #e5e8eb;
+  --color-gray-300: #d1d6db;
+  --color-gray-400: #b0b8c1;
+  --color-gray-500: #8b95a1;
+  --color-gray-600: #6b7684;
+  --color-gray-700: #4e5968;
+  --color-gray-800: #333d4b;
+  --color-gray-900: #191f28;
 }
 
 html, body, #root { height: 100%; }
-body { @apply bg-neutral-100 text-ink antialiased; }
+body { @apply bg-gray-100 text-ink antialiased; letter-spacing: -0.01em; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
+.press { @apply transition-transform duration-100 active:scale-[0.97]; }

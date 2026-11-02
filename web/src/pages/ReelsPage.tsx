@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
-import NaiteRing from '../components/NaiteRing'
+import { CategoryArt } from '../components/CategoryIcon'
+import { categoryOf } from '../lib/category'
 import { displayName, sinceYear } from '../lib/format'
 import { useI18n } from '../lib/i18n'
 import { fetchReels } from '../lib/supabase'
@@ -37,9 +38,9 @@ export default function ReelsPage({ active }: { active: boolean }) {
     return () => io.disconnect()
   }, [reels, rounds])
 
-  if (err) return <p className="p-8 text-center text-sm text-neutral-500">{t('error')}</p>
-  if (!reels) return <p className="p-8 text-center text-sm text-neutral-500">{t('loading')}</p>
-  if (!reels.length) return <p className="p-8 text-center text-sm text-neutral-500">{t('reels.empty')}</p>
+  if (err) return <p className="p-8 text-center text-sm text-gray-500">{t('error')}</p>
+  if (!reels) return <p className="p-8 text-center text-sm text-gray-500">{t('loading')}</p>
+  if (!reels.length) return <p className="p-8 text-center text-sm text-gray-500">{t('reels.empty')}</p>
 
   return (
     <div ref={root} className="no-scrollbar h-full snap-y snap-mandatory overflow-y-auto bg-black">
@@ -67,17 +68,15 @@ function ReelItem({ r, i, playing, near }: { r: Reel; i: number; playing: boolea
       ) : r.poster_url || r.video_url ? (
         <img src={r.poster_url ?? undefined} alt="" className="h-full w-full object-cover" loading="lazy" />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-neutral-900">
-          <NaiteRing years={s.years_by_license} size={180} />
-        </div>
+        <CategoryArt cat={categoryOf(s)} dark className="h-full w-full" />
       )}
       <div className="absolute left-3 top-3">
-        <span className="rounded bg-white/90 px-1.5 py-px text-[11px] text-neutral-700">{r.video_url ? t('badge.mockVideo') : t('badge.mock')}</span>
+        <span className="rounded-md bg-white/90 px-1.5 py-0.5 text-[11px] font-bold text-gray-700">{r.video_url ? t('badge.mockVideo') : t('badge.mock')}</span>
       </div>
       <div className="absolute inset-x-0 bottom-0 bg-black/55 p-4 text-white">
         <div className="text-lg font-bold">{displayName(s, lang)}</div>
         <div className="text-sm text-white/85">{(lang === 'en' ? r.caption_en : r.caption_ko) ?? t('since', { year: sinceYear(s.license_date) ?? '-' })}</div>
-        <Link to={`/s/${s.slug}`} className="mt-3 inline-block rounded bg-white px-4 py-2 text-sm font-semibold text-ink">
+        <Link to={`/s/${s.slug}`} className="mt-3 inline-block rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white">
           {t('reels.view')}
         </Link>
       </div>
