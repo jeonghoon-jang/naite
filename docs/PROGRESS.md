@@ -9,6 +9,8 @@
 - 2026-11-02 챗봇: Planner와 질문 임베딩을 병렬 호출, match_stores가 카드 필드를 돌려줘 DB 재조회 없음, anon 키 + RPC(서비스 키는 파이프라인 전용).
 - 2026-11-02 전처리에 업종 불일치·상가 미매칭 검사와 `docs/review.csv` 검수 시트 추가 (`keep=n` 숨김).
 
+- 2026-11-02 UI 개편(Figma Naite_draft v0.6 기준): 로고 C, 업종 아이콘 10종으로 가게 구분(나이테 카드 대체), 주황 브라운 #B8581F, 국내 앱 스타일. 하단 탭에 홈 추가(4개), 지도는 `/map`으로 이동.
+
 ## 단계
 - [x] Step 0 레포 정리
 - [x] Step 1 Supabase 스키마 (SQL Editor 실행, 테이블 4개 + match_stores 확인)
