@@ -28,16 +28,18 @@ export default function MenuPage() {
     fetchMenu(slug).then(setD, () => setErr(true))
   }, [slug])
 
-  const set = (sort: number, min: number, delta: number) => {
-    const next = new Map(qty)
-    const cur = next.get(sort) ?? 0
-    let v = cur + delta
-    if (delta > 0 && cur === 0) v = Math.max(1, min)
-    if (delta < 0 && v < min) v = 0
-    if (v > 0) next.set(sort, Math.min(v, 99))
-    else next.delete(sort)
-    setQty(next)
-  }
+  // 연속으로 빠르게 눌러도 누락되지 않게 이전 상태 기준으로 계산한다
+  const set = (sort: number, min: number, delta: number) =>
+    setQty((prev) => {
+      const next = new Map(prev)
+      const cur = next.get(sort) ?? 0
+      let v = cur + delta
+      if (delta > 0 && cur === 0) v = Math.max(1, min)
+      if (delta < 0 && v < min) v = 0
+      if (v > 0) next.set(sort, Math.min(v, 99))
+      else next.delete(sort)
+      return next
+    })
   const count = [...qty.values()].reduce((a, b) => a + b, 0)
   const items = [...qty.entries()].map(([i, q]) => `${i}:${q}`).join(',')
 
