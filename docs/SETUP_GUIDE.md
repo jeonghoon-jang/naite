@@ -35,7 +35,7 @@ Claude Code가 코드를 짜는 동안, 아래는 **사람이 직접** 해야 �
 2. 앱 키에서 복사
    - **JavaScript 키** → `VITE_KAKAO_JS_KEY` (지도·로드뷰, 브라우저용)
    - **REST API 키** → `KAKAO_REST_KEY` (장소 ID 매칭·챗봇 지역 판정, 서버용)
-3. 플랫폼 → Web → 사이트 도메인 등록: `http://localhost:5173` + Vercel 주소(배포 후 추가)
+3. 플랫폼 → Web → 사이트 도메인 등록: `http://localhost:5180` + Vercel 주소(배포 후 추가)
 4. 콘솔에 "카카오맵" 사용 설정 스위치가 보이면 ON으로 켜요.
 
 ## 4. OpenAI (5분)
