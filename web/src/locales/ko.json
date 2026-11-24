@@ -49,6 +49,8 @@
   "order.empty": "선택한 메뉴가 없어요.",
   "store.section.reel": "부산집 릴스",
   "reels.view": "가게 보기",
+  "reels.mute": "소리 끄기",
+  "reels.unmute": "소리 켜기",
   "reels.empty": "아직 릴스가 없어요.",
   "ask.title": "AI 챗봇",
   "ask.intro": "홍대입구역 주변 노포를 찾아드려요. 업종, 업력, 동네로 물어보세요.",
