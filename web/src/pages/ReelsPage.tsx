@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { CategoryArt } from '../components/CategoryIcon'
+import { busanjipReel } from '../lib/busanjipReel'
 import { categoryOf } from '../lib/category'
 import { displayName, sinceYear } from '../lib/format'
 import { useI18n } from '../lib/i18n'
@@ -8,7 +9,7 @@ import { fetchReels } from '../lib/supabase'
 import type { Reel } from '../lib/types'
 
 /**
- * 세로 스냅 릴스. 전부 목업이라 '예시 영상' 표시. 영상이 없으면 포스터, 포스터도 없으면 나이테 카드.
+ * 세로 스냅 릴스. 영상이 없으면 포스터, 포스터도 없으면 나이테 카드.
  * 끝에 가까워지면 목록을 한 바퀴 더 이어 붙여 계속 내려갈 수 있다(무한 스크롤).
  */
 export default function ReelsPage({ active }: { active: boolean }) {
@@ -61,18 +62,22 @@ function ReelItem({ r, i, playing, near }: { r: Reel; i: number; playing: boolea
     else v.pause()
   }, [playing])
   const s = r.stores
+  const isBusanjipReel = s.slug === busanjipReel.slug && r.video_url === busanjipReel.path
+  const videoSrc = isBusanjipReel ? busanjipReel.src : r.video_url
   return (
     <article data-i={i} className="relative flex h-full snap-start items-center justify-center overflow-hidden">
-      {r.video_url && near ? (
-        <video ref={video} src={r.video_url} poster={r.poster_url ?? undefined} muted loop playsInline preload="metadata" className="h-full w-full object-cover" />
-      ) : r.poster_url || r.video_url ? (
-        <img src={r.poster_url ?? undefined} alt="" className="h-full w-full object-cover" loading="lazy" />
+      {videoSrc && near ? (
+        <video ref={video} src={videoSrc} poster={isBusanjipReel ? undefined : r.poster_url ?? undefined} muted loop playsInline preload="metadata" className="h-full w-full object-cover" />
+      ) : r.poster_url && !isBusanjipReel ? (
+        <img src={r.poster_url} alt="" className="h-full w-full object-cover" loading="lazy" />
       ) : (
         <CategoryArt cat={categoryOf(s)} dark className="h-full w-full" />
       )}
-      <div className="absolute left-3 top-3">
-        <span className="rounded-md bg-white/90 px-1.5 py-0.5 text-[11px] font-bold text-gray-700">{r.video_url ? t('badge.mockVideo') : t('badge.mock')}</span>
-      </div>
+      {r.is_mock && !isBusanjipReel && (
+        <div className="absolute left-3 top-3">
+          <span className="rounded-md bg-white/90 px-1.5 py-0.5 text-[11px] font-bold text-gray-700">{videoSrc ? t('badge.mockVideo') : t('badge.mock')}</span>
+        </div>
+      )}
       <div className="absolute inset-x-0 bottom-0 bg-black/55 p-4 text-white">
         <div className="text-lg font-bold">{displayName(s, lang)}</div>
         <div className="text-sm text-white/85">{(lang === 'en' ? r.caption_en : r.caption_ko) ?? t('since', { year: sinceYear(s.license_date) ?? '-' })}</div>

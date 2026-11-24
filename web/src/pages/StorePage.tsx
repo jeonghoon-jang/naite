@@ -7,6 +7,7 @@ import { CategoryArt } from '../components/CategoryIcon'
 import HeartButton from '../components/HeartButton'
 import Roadview from '../components/Roadview'
 import StatusBadges from '../components/StatusBadges'
+import { busanjipReel } from '../lib/busanjipReel'
 import { catLabel, categoryOf } from '../lib/category'
 import { bizLabel, displayName, distLabel, kakaoDirections, kakaoMapLink, sinceYear, tagLabel, yearsInt } from '../lib/format'
 import { useI18n } from '../lib/i18n'
@@ -116,6 +117,22 @@ export default function StorePage() {
             {summary && <p className="pt-2 text-[15px] leading-6 text-gray-700">{summary}</p>}
             {s.data_status === 'candidate' && <p className="rounded-xl bg-gray-50 px-3.5 py-2.5 text-[12px] text-gray-500">{t('store.unverifiedNote')}</p>}
           </section>
+
+          {s.slug === busanjipReel.slug && (
+            <>
+              <Gap />
+              <Section title={t('store.section.reel')}>
+                <video
+                  src={busanjipReel.src}
+                  aria-label={t('store.section.reel')}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="mx-auto block max-h-[70svh] w-full rounded-[18px] bg-black object-contain"
+                />
+              </Section>
+            </>
+          )}
 
           <Gap />
           <Section title={t('store.section.menu')}>
