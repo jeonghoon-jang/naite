@@ -49,6 +49,8 @@
   "order.empty": "No items selected.",
   "store.section.reel": "Busanjip reel",
   "reels.view": "View place",
+  "reels.mute": "Mute",
+  "reels.unmute": "Unmute",
   "reels.empty": "No reels yet.",
   "ask.title": "AI Chat",
   "ask.intro": "I find old restaurants around Hongik Univ. Station. Ask by food, age, or neighborhood.",

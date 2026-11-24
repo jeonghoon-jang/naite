@@ -18,6 +18,7 @@ export default function ReelsPage({ active }: { active: boolean }) {
   const [err, setErr] = useState(false)
   const [visible, setVisible] = useState(0)
   const [rounds, setRounds] = useState(2)
+  const [soundOn, setSoundOn] = useState(false)
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,28 +47,62 @@ export default function ReelsPage({ active }: { active: boolean }) {
   return (
     <div ref={root} className="no-scrollbar h-full snap-y snap-mandatory overflow-y-auto bg-black">
       {Array.from({ length: n * rounds }, (_, i) => (
-        <ReelItem key={i} r={reels[i % n]} i={i} playing={active && visible === i} near={Math.abs(visible - i) <= 1} />
+        <ReelItem
+          key={i}
+          r={reels[i % n]}
+          i={i}
+          playing={active && visible === i}
+          near={Math.abs(visible - i) <= 1}
+          soundOn={soundOn}
+          setSoundOn={setSoundOn}
+        />
       ))}
     </div>
   )
 }
 
-function ReelItem({ r, i, playing, near }: { r: Reel; i: number; playing: boolean; near: boolean }) {
+function ReelItem({ r, i, playing, near, soundOn, setSoundOn }: {
+  r: Reel
+  i: number
+  playing: boolean
+  near: boolean
+  soundOn: boolean
+  setSoundOn: (enabled: boolean) => void
+}) {
   const { t, lang } = useI18n()
   const video = useRef<HTMLVideoElement>(null)
   useEffect(() => {
     const v = video.current
     if (!v) return
-    if (playing) v.play().catch(() => {})
-    else v.pause()
-  }, [playing])
+    if (!playing) {
+      v.pause()
+      return
+    }
+    let active = true
+    v.play().catch((error: unknown) => {
+      if (!active || !(error instanceof DOMException) || error.name !== 'NotAllowedError' || v.muted) return
+      v.muted = true
+      setSoundOn(false)
+      void v.play().catch(() => {})
+    })
+    return () => { active = false }
+  }, [playing, setSoundOn])
+
+  const toggleSound = () => {
+    const v = video.current
+    if (!v) return
+    const enabled = v.muted
+    v.muted = !enabled
+    setSoundOn(enabled)
+    void v.play().catch(() => {})
+  }
   const s = r.stores
   const isBusanjipReel = s.slug === busanjipReel.slug && r.video_url === busanjipReel.path
   const videoSrc = isBusanjipReel ? busanjipReel.src : r.video_url
   return (
     <article data-i={i} className="relative flex h-full snap-start items-center justify-center overflow-hidden">
       {videoSrc && near ? (
-        <video ref={video} src={videoSrc} poster={isBusanjipReel ? undefined : r.poster_url ?? undefined} muted loop playsInline preload="metadata" className="h-full w-full object-cover" />
+        <video ref={video} src={videoSrc} poster={isBusanjipReel ? undefined : r.poster_url ?? undefined} muted={!soundOn} loop playsInline preload="metadata" className="h-full w-full object-cover" />
       ) : r.poster_url && !isBusanjipReel ? (
         <img src={r.poster_url} alt="" className="h-full w-full object-cover" loading="lazy" />
       ) : (
@@ -77,6 +112,15 @@ function ReelItem({ r, i, playing, near }: { r: Reel; i: number; playing: boolea
         <div className="absolute left-3 top-3">
           <span className="rounded-md bg-white/90 px-1.5 py-0.5 text-[11px] font-bold text-gray-700">{videoSrc ? t('badge.mockVideo') : t('badge.mock')}</span>
         </div>
+      )}
+      {videoSrc && playing && (
+        <button
+          type="button"
+          onClick={toggleSound}
+          className="absolute right-3 top-3 rounded-full bg-black/65 px-3.5 py-2 text-xs font-bold text-white"
+        >
+          {t(soundOn ? 'reels.mute' : 'reels.unmute')}
+        </button>
       )}
       <div className="absolute inset-x-0 bottom-0 bg-black/55 p-4 text-white">
         <div className="text-lg font-bold">{displayName(s, lang)}</div>
